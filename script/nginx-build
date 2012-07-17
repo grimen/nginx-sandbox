@@ -3,7 +3,6 @@
 VERSION='1.3.3'
 NAME="nginx-$VERSION"
 ROOT="$PWD"
-BIN="nginx"
 
 mkdir -p "$ROOT/vendor"
 
@@ -16,7 +15,7 @@ else
   curl "http://nginx.org/download/$NAME.tar.gz" > "$ROOT/vendor/$NAME.tar.gz"
 fi
 
-tar -xvf "$ROOT/vendor/$NAME.tar.gz" -C "$ROOT/vendor"
+tar xzvf "$ROOT/vendor/$NAME.tar.gz" -C "$ROOT/vendor"
 
 cd "$ROOT/vendor/$NAME"
 
@@ -41,7 +40,8 @@ make clean -C "$ROOT/vendor/$NAME"
   --with-http_stub_status_module \
   --with-http_sub_module \
   --with-ld-opt="-L /usr/local/lib" \
-  --with-cc-opt="-I /usr/local/include"
+  --with-cc-opt="-I /usr/local/include" \
+  --with-pcre-jit
 
   # == http://wiki.nginx.org/Modules
   #
