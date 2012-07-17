@@ -1,0 +1,21 @@
+#! /usr/bin/env sh
+
+VERSION='1.3.3'
+NAME="nginx-$VERSION"
+ROOT="$PWD"
+BIN="nginx"
+
+mkdir -p "$ROOT/logs"
+mkdir -p "$ROOT/tmp"
+
+echo "[nginx-stop]: ROOT $ROOT"
+
+if [[ -d "$ROOT/vendor/$NAME/objs" ]]; then
+  echo "[nginx-stop]: BIN $ROOT/vendor/$NAME/objs/nginx"
+  export BIN="$ROOT/vendor/$NAME/objs/nginx"
+else
+  echo "[nginx-stop]: BIN nginx"
+fi
+
+echo "[nginx-stop]: LOG Stopping Nginx in: $ROOT"
+([[ -s "$ROOT/tmp/nginx.pid" ]] && nginx -s quit -p `pwd`/ -c config/nginx.conf && echo '[nginx-start]: OK') || echo "[nginx-start]: SKIP"

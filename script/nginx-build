@@ -1,0 +1,99 @@
+#! /usr/bin/env sh
+
+VERSION='1.3.3'
+NAME="nginx-$VERSION"
+ROOT="$PWD"
+BIN="nginx"
+
+mkdir -p "$ROOT/vendor"
+
+rm -rf "$ROOT/vendor/$NAME"
+
+if [[ -f "$ROOT/vendor/$NAME.tar.gz" ]]; then
+  echo "[nginx-build]: EXISTS $NAME"
+else
+  echo "[nginx-build]: FETCH $NAME"
+  curl "http://nginx.org/download/$NAME.tar.gz" > "$ROOT/vendor/$NAME.tar.gz"
+fi
+
+tar -xvf "$ROOT/vendor/$NAME.tar.gz" -C "$ROOT/vendor"
+
+cd "$ROOT/vendor/$NAME"
+
+make clean -C "$ROOT/vendor/$NAME"
+
+./configure \
+  --without-http_fastcgi_module \
+  --without-http_ssi_module \
+  --without-http_uwsgi_module \
+  --without-mail_pop3_module \
+  --without-mail_imap_module \
+  --without-mail_smtp_module \
+  \
+  --with-http_addition_module \
+  --with-google_perftools_module \
+  --with-http_gzip_static_module \
+  --with-http_image_filter_module \
+  --with-http_random_index_module \
+  --with-http_realip_module \
+  --with-http_secure_link_module \
+  --with-http_ssl_module \
+  --with-http_stub_status_module \
+  --with-http_sub_module \
+  --with-ld-opt="-L /usr/local/lib" \
+  --with-cc-opt="-I /usr/local/include"
+
+  # == http://wiki.nginx.org/Modules
+  #
+  #   --without-http
+  #   --without-http_access_module
+  #   --without-http_auth_basic_module
+  #   --without-http_autoindex_module
+  #   --without-http_browser_module
+  #   --without-http_charset_module
+  #   --without-http_empty_gif_module
+  #   --without-http_fastcgi_module
+  #   --without-http_geo_module
+  #   --without-http_gzip_module
+  #   --without-http_limit_req_module
+  #   --without-http_limit_zone_module
+  #   --without-http_limit_conn_module
+  #   --without-http_map_module
+  #   --without-http_memcached_module
+  #   --without-http_proxy_module
+  #   --without-http_referer_module
+  #   --without-http_rewrite_module
+  #   --without-http_scgi_module
+  #   --without-http_split_clients_module
+  #   --without-http_ssi_module
+  #   --without-http_upstream_ip_hash_module
+  #   --without-http_userid_module
+  #   --without-http_uwsgi_module
+  #
+  #   --with-http_addition_module
+  #   --with-http_degradation_module
+  #   --with-http_perl_module
+  #   --with-http_flv_module
+  #   --with-http_geoip_module
+  #   --with-google_perftools_module
+  #   --with-http_gzip_static_module
+  #   --with-http_image_filter_module
+  #   --with-http_mp4_module
+  #   --with-http_random_index_module
+  #   --with-http_realip_module
+  #   --with-http_secure_link_module
+  #   --with-http_ssl_module
+  #   --with-http_stub_status_module
+  #   --with-http_sub_module
+  #   --with-http_dav_module
+  #   --with-http_xslt_module
+  #
+  # == http://wiki.nginx.org/3rdPartyModules
+  #
+  #   ...
+  #
+
+
+make -j4 && echo "[nginx-build]: OK"
+
+cd "$ROOT/vendor/$NAME"
