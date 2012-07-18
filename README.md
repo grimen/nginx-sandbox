@@ -32,20 +32,19 @@ $ ./script/nginx-build/addons/<addon>
 $ ./script/nginx-start
 ```
 
-**Within this sandbox/path: Stop Nginx:**
-
-```bash
-$ ./script/nginx-stop
-```
-
 **Ta-ta!**
 
 ```bash
 $ open http://localhost:8080
 ```
 
-QUOTE: "- Is this live? - Yes this is live. On localhost."
+*"- Is this live? - Yes this is live. On localhost."*
 
+**Within this sandbox/path: Stop Nginx:**
+
+```bash
+$ ./script/nginx-stop
+```
 
 ## License
 
