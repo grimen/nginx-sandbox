@@ -1,3 +1,6 @@
 
 - http://openresty.org/
 - http://londonlua.org/scripting_nginx_with_lua/slides.html
+- http://evanmiller.org/nginx-modules-guide.html
+- http://agentzh.org/misc/nginx/agentzh-nginx-tutorials-enuk.html
+- https://github.com/simpl/ngx_devel_kit

@@ -1,26 +1,51 @@
 #! /usr/bin/env sh
-
-VERSION='1.3.3'
-NAME="nginx-$VERSION"
 ROOT="$PWD"
+VENDOR="$ROOT/vendor"
 
-mkdir -p "$ROOT/vendor"
+NGINX_TITLE='Nginx/OpenResty'
+NGINX_NAME='ngx_openresty'
+NGINX_TAG='v1.2.1.7'
+NGINX_URL='git://github.com/agentzh/ngx_openresty.git'
+NGINX_PATH="$VENDOR/$NGINX_NAME-$NGINX_TAG"
 
-rm -rf "$ROOT/vendor/$NAME"
+# == INIT
 
-if [[ -f "$ROOT/vendor/$NAME.tar.gz" ]]; then
-  echo "[nginx-build]: EXISTS $NAME"
+# rm -rf "$NGINX_PATH"
+mkdir -p "$VENDOR"
+echo "[nginx-build]: CD $VENDOR"
+cd "$VENDOR"
+
+# == FETCH
+
+if [[ -s "$NGINX_PATH" ]]; then
+  echo "[nginx-build]: EXISTS $NGINX_PATH"
 else
-  echo "[nginx-build]: FETCH $NAME"
-  curl "http://nginx.org/download/$NAME.tar.gz" > "$ROOT/vendor/$NAME.tar.gz"
+  echo "[nginx-build]: CHECKOUT $NGINX_URL ($NGINX_TAG) > $NGINX_PATH"
+  ( git clone --branch "$NGINX_TAG" "$NGINX_URL" "$NGINX_PATH" && echo "[nginx-build]: OK" ) || ( echo "[nginx-build]: FAIL" && exit )
 fi
 
-tar xzvf "$ROOT/vendor/$NAME.tar.gz" -C "$ROOT/vendor"
+# == SETUP 1/2
 
-cd "$ROOT/vendor/$NAME"
+echo "[nginx-build]: CD $NGINX_PATH"
+cd "$NGINX_PATH"
 
-make clean -C "$ROOT/vendor/$NAME"
+echo "[nginx-build]: MAKE CLEAN"
+make clean
 
+echo "[nginx-build]: MAKE"
+( make -j4 && echo "[nginx-build]: OK" ) || (echo "[nginx-build]: FAIL" && exit)
+
+# == SETUP 2/2
+
+NGINX_VERSION=`echo "$NGINX_TAG" | tr -ds 'v' ''`
+
+echo "[nginx-build]: CD $NGINX_PATH/$NGINX_NAME-$NGINX_VERSION"
+cd "$NGINX_PATH/$NGINX_NAME-$NGINX_VERSION"
+
+echo "[nginx-build]: MAKE CLEAN"
+make clean
+
+echo "[nginx-build]: CONFIGURE"
 ./configure \
   --without-http_fastcgi_module \
   --without-http_ssi_module \
@@ -93,7 +118,7 @@ make clean -C "$ROOT/vendor/$NAME"
   #   ...
   #
 
+echo "[nginx-build]: MAKE"
+( make -j$(sysctl -n hw.ncpu) && echo "[nginx-build]: OK" ) || echo "[nginx-build]: FAIL"
 
-make -j4 && echo "[nginx-build]: OK"
-
-cd "$ROOT/vendor/$NAME"
+# == DONE

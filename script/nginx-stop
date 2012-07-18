@@ -1,21 +1,37 @@
 #! /usr/bin/env sh
-
-VERSION='1.3.3'
-NAME="nginx-$VERSION"
 ROOT="$PWD"
+VENDOR="$PWD/vendor"
+TMP="$PWD/tmp"
+LOG="$PWD/logs"
 
-mkdir -p "$ROOT/logs"
-mkdir -p "$ROOT/tmp"
+touch "$TMP/nginx.name"
+
+if [[ $(cat "$TMP/nginx.name") == 'openresty-local' ]]; then
+  NGINX_NAME='ngx_openresty'
+  NGINX_TAG='v1.2.1.7'
+  NGINX_PATH="$VENDOR/ngx_openresty-v1.2.1.7/ngx_openresty-1.2.1.7/build/nginx-1.2.1"
+else
+  NGINX_NAME='nginx'
+  NGINX_TAG='stable-1.2'
+  NGINX_PATH="$VENDOR/nginx-stable-1.2"
+fi
+
+mkdir -p "$LOG"
+mkdir -p "$TMP"
 
 echo "[nginx-stop]: ROOT $ROOT"
 
-if [[ -d "$ROOT/vendor/$NAME/objs" ]]; then
-  echo "[nginx-stop]: BIN $ROOT/vendor/$NAME/objs/nginx"
-  BIN="$ROOT/vendor/$NAME/objs/nginx"
+if [[ -d "$NGINX_PATH/objs" ]]; then
+  echo "[nginx-stop]: BIN $NGINX_PATH/objs/nginx"
+  # nginx: local/sandboxed
+  BIN="$NGINX_PATH/objs/nginx"
 else
   echo "[nginx-stop]: BIN nginx"
+  # nginx: global/shared
   BIN="nginx"
 fi
 
 echo "[nginx-stop]: LOG Stopping Nginx in: $ROOT"
-([[ -s "$ROOT/tmp/nginx.pid" ]] && nginx -s quit -p `pwd`/ -c config/nginx.conf && echo '[nginx-start]: OK') || echo "[nginx-start]: SKIP"
+( [[ -s "$TMP/nginx.pid" ]] && nginx -s quit -p `pwd`/ -c config/nginx.conf && echo '[nginx-start]: OK' ) || echo "[nginx-start]: SKIP"
+
+rm "$TMP/nginx.name"

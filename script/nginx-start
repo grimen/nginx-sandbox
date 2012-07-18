@@ -1,26 +1,45 @@
 #! /usr/bin/env sh
-
-VERSION='1.3.3'
-NAME="nginx-$VERSION"
 ROOT="$PWD"
+VENDOR="$PWD/vendor"
+TMP="$PWD/tmp"
+LOG="$PWD/logs"
 
-mkdir -p "$ROOT/logs"
-mkdir -p "$ROOT/tmp"
+if [[ $1 == 'openresty' ]]; then
+  NGINX_NAME='ngx_openresty'
+  NGINX_TAG='v1.2.1.7'
+  NGINX_PATH="$VENDOR/ngx_openresty-v1.2.1.7/ngx_openresty-1.2.1.7/build/nginx-1.2.1"
+  echo "openresty-local" > "$TMP/nginx.name"
+else
+  NGINX_NAME='nginx'
+  NGINX_TAG='stable-1.2'
+  NGINX_PATH="$VENDOR/nginx-stable-1.2"
+  echo "nginx-local" > "$TMP/nginx.name"
+fi
+
+mkdir -p "$LOG"
+mkdir -p "$TMP"
 
 echo "[nginx-start]: ROOT $ROOT"
 
-if [[ -d "$ROOT/vendor/$NAME/objs" ]]; then
-  echo "[nginx-start]: BIN $ROOT/vendor/$NAME/objs/nginx"
-  BIN="$ROOT/vendor/$NAME/objs/nginx"
+if [[ -d "$NGINX_PATH/objs" ]]; then
+  echo "[nginx-start]: BIN $NGINX_PATH/objs/nginx"
+  # nginx: local/sandboxed
+  BIN="$NGINX_PATH/objs/nginx"
 else
   echo "[nginx-start]: BIN nginx"
-  BIN="nginx"
+  # nginx: global/shared
+  BIN="nginx \
+        --uwsgi_temp_path $TMP/uwsgi_temp \
+        --fastcgi_temp_path $TMP/fastcgi_temp \
+        --scgi_temp_path $TMP/scgi_temp \
+        --proxy_temp_path $TMP/proxy_temp \
+        --client_body_temp_path $TMP/client_body_temp"
 fi
 
 echo "[nginx-start]: INFO Stopping Nginx in: $ROOT"
-([[ -s "$ROOT/tmp/nginx.pid" ]] && nginx -s quit -p `pwd`/ -c config/nginx.conf && echo "[nginx-start]: RESTART")
+( [[ -s "$TMP/nginx.pid" ]] && $BIN -s quit -p `pwd`/ -c config/nginx.conf && echo "[nginx-start]: RESTART" )
 
 echo "[nginx-start]: INFO Starting Nginx in: $ROOT"
-$BIN -p `pwd`/ -c config/nginx.conf && echo '[nginx-start]: OK'
+( $BIN -p `pwd`/ -c config/nginx.conf && echo '[nginx-start]: OK' ) || echo "[nginx-start]: FAIL"
 
-echo "[nginx-start]: PID $(cat "$ROOT/tmp/nginx.pid")"
+echo "[nginx-start]: PID $(cat "$TMP/nginx.pid")"

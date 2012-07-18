@@ -1,0 +1,30 @@
+#! /usr/bin/env sh
+ROOT="$PWD"
+VENDOR="$ROOT/vendor"
+ADDONS="$VENDOR/addons"
+
+# Reference: https://github.com/samizdatco/nginx-http-auth-digest
+
+MODULE_TITLE='Nginx: Digest Authentication'
+MODULE_NAME='nginx-http-auth-digest'
+MODULE_TAG='0.0.0'
+MODULE_URL='git://github.com/samizdatco/nginx-http-auth-digest.git'
+MODULE_PATH="$ADDONS/$MODULE_NAME-$MODULE_TAG"
+
+# == INIT
+
+rm -rf "$MODULE_PATH"
+mkdir -p "$ADDONS"
+echo "[nginx-build]: CD $ADDONS"
+cd "$ADDONS"
+
+# == FETCH
+
+if [[ -s "$MODULE_PATH" ]]; then
+  echo "[nginx-build]: EXISTS $MODULE_PATH"
+else
+  echo "[nginx-build]: CHECKOUT $MODULE_URL > $MODULE_PATH"
+  ( git clone "$MODULE_URL" "$MODULE_PATH" && echo "[nginx-build]: OK" ) || (echo "[nginx-build]: FAIL" && exit)
+fi
+
+# == DONE
