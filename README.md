@@ -2,6 +2,7 @@
 
 _Nginx sandbox/playground for experiments with extra addons/modules._
 
+
 ## Setup
 
 **Sandboxed Nginx:**
@@ -22,6 +23,7 @@ $ ./script/nginx-build/nginx-openresty
 $ ./script/nginx-build/addons/<addon>
 ```
 
+
 ## Usage
 
 **Within this sandbox/path: Start/Restart Nginx:**
@@ -35,6 +37,15 @@ $ ./script/nginx-start
 ```bash
 $ ./script/nginx-stop
 ```
+
+**Ta-ta!**
+
+```bash
+$ open http://localhost:8080
+```
+
+QUOTE: "- Is this live? - Yes this is live. On localhost."
+
 
 ## License
 
