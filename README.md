@@ -2,6 +2,7 @@
 
 _Nginx sandbox/playground for experiments with extra addons/modules._
 
+![nginx sandbox](http://cl.ly/image/080y0T3Y3f1Q/Nginx%20Sandbox.png)
 
 ## Setup
 
