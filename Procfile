@@ -1,1 +1,1 @@
-web: ./script/nginx-start
+web: make start

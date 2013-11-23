@@ -3,6 +3,17 @@ ROOT="$PWD"
 VENDOR="$PWD/vendor"
 TMP="$PWD/tmp"
 LOG="$PWD/logs"
+LABEL="$LABEL"
+PORT=8080
+
+mkdir -p $LOG
+mkdir -p $TMP
+
+OPENRESTY_NAME="ngx_openresty"
+OPENRESTY_PATH="$VENDOR/$OPENRESTY_NAME"
+OPENRESTY_NGINX_NAME="nginx"
+OPENRESTY_NGINX_VERSION="1.4.3"
+OPENRESTY_NGINX_PATH="$OPENRESTY_PATH/build/$OPENRESTY_NGINX_NAME-$OPENRESTY_NGINX_VERSION"
 
 PID_FILE="$TMP/nginx.pid"
 SID_FILE="$TMP/nginx.sid"
@@ -12,32 +23,25 @@ CONFIG_FILE="$CONFIG_PATH/nginx.conf"
 
 touch $SID_FILE
 
-if [[ $(cat $SID_FILE) == 'openresty-local' ]]; then
-  NGINX_NAME='ngx_openresty'
-  NGINX_TAG='v1.2.1.7'
-  NGINX_PATH="$VENDOR/ngx_openresty-v1.2.1.7/ngx_openresty-1.2.1.7/build/nginx-1.2.1"
-else
-  NGINX_NAME='nginx'
-  NGINX_TAG='stable-1.2'
-  NGINX_PATH="$VENDOR/nginx-stable-1.2"
-fi
+SID=$(cat $SID_FILE)
 
-mkdir -p $LOG
-mkdir -p $TMP
+echo "SID: $SID"
 
-echo "[nginx-stop]: ROOT $ROOT"
+echo "$LABEL: ROOT $ROOT"
 
-if [[ -d "$NGINX_PATH/objs" ]]; then
+# REVIEW: nginx -s stop
+
+if [[ -d "$OPENRESTY_NGINX_PATH/objs" ]]; then
   # nginx: local/sandboxed
-  BIN="$NGINX_PATH/objs/nginx"
+  BIN="$OPENRESTY_NGINX_PATH/objs/nginx"
 else
   # nginx: global/shared
   BIN="nginx"
 fi
 
-echo "[nginx-stop]: BIN $BIN"
+echo "$LABEL: USING BIN $BIN"
 
-echo "[nginx-stop]: INFO Stopping Nginx in: $ROOT"
+echo "$LABEL: INFO Stopping Nginx in: $ROOT"
 ( [[ -s $PID_FILE ]] && ($BIN -s quit -p `pwd`/ -c $CONFIG_FILE) && echo '[nginx-start]: OK' ) || echo "[nginx-start]: SKIP"
 
 rm -rf $CONFIG_PATH

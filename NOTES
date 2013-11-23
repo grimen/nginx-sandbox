@@ -1,17 +1,55 @@
 
-- https://chrislea.com/2012/11/16/speed-up-your-site-with-spdy-and-nginx
-- http://www.lifelinux.com/how-to-optimize-nginx-for-maximum-performance/
-- http://dak1n1.com/blog/12-nginx-performance-tuning
-- http://openresty.org
-- http://londonlua.org/scripting_nginx_with_lua/slides.html
-- http://evanmiller.org/nginx-modules-guide.html
-- http://agentzh.org/misc/nginx/agentzh-nginx-tutorials-enuk.html
-- https://github.com/simpl/ngx_devel_kit
-- https://github.com/adamwiggins/nginx-as-heroku-app
-- https://github.com/essh/heroku-buildpack-nginx
-- http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache
-- http://wiki.nginx.org/HttpProxyModule
-- http://openresty.org/#DynamicRoutingBasedOnRedis
-- http://www.aosabook.org/en/nginx.html
-- http://codetunes.com/2011/07/26/outbound-api-rate-limits-the-nginx-way
-- http://devblog.mixlr.com/2012/06/26/how-we-use-nginx-lua-and-redis-to-beta-ify-mixlr
+NGINX INTERNALS
+  - http://www.aosabook.org/en/nginx.html
+  - http://www.slideshare.net/joshzhu/nginx-internals
+
+NGINX CONFIG
+  - http://agentzh.org/misc/nginx/agentzh-nginx-tutorials-enuk.html
+
+NGINX MODULE DEVELOPMENT
+  - http://evanmiller.org/nginx-modules-guide.html
+  - https://github.com/simpl/ngx_devel_kit
+
+NGINX PROXY
+  - http://wiki.nginx.org/HttpProxyModule
+
+NGINX RATE LIMITING
+  - http://codetunes.com/2011/07/26/outbound-api-rate-limits-the-nginx-way
+
+NGINX PERFORMANCE:
+  - http://www.lifelinux.com/how-to-optimize-nginx-for-maximum-performance
+  - http://dak1n1.com/blog/12-nginx-performance-tuning
+
+NGINX SECURITY:
+  - https://coderwall.com/p/4k6wdq
+
+NGINX WEBSOCKETS
+  - https://medium.com/p/1778601c9e05
+
+NGINX TCP
+  - https://github.com/bigplum/nginx-tcp-lua-module
+
+NGINX LUA
+  - http://blog.cloudflare.com/pushing-nginx-to-its-limit-with-lua
+  - http://londonlua.org/scripting_nginx_with_lua/slides.html
+  - http://openresty.org/#DynamicRoutingBasedOnRedis
+  - http://devblog.mixlr.com/2012/06/26/how-we-use-nginx-lua-and-redis-to-beta-ify-mixlr
+  - http://devblog.mixlr.com/2012/09/01/nginx-lua/
+  - http://leafo.net/lapis/#lang=lua
+  - http://hveem.no/about
+
+NGINX LUA REDIS
+  - http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache
+
+NGINX LUA OAUTH
+  - http://chairnerd.seatgeek.com/oauth-support-for-nginx-with-lua
+
+NGINX ON HEROKU
+  - https://github.com/adamwiggins/nginx-as-heroku-app
+  - https://github.com/essh/heroku-buildpack-nginx
+
+NGINX DOCKER
+  - https://index.docker.io/u/senthilnayagam/openresty/
+
+NGINX GRUNT
+  - https://npmjs.org/package/grunt-nginx

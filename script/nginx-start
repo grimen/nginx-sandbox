@@ -4,6 +4,32 @@ CONFIG="$PWD/config"
 VENDOR="$PWD/vendor"
 TMP="$PWD/tmp"
 LOG="$PWD/logs"
+LABEL="[nginx-start]"
+
+mkdir -p $LOG
+mkdir -p $TMP
+
+rm -rf "$LOG/*"
+
+if [[ "$HTTP_PORT" == "" ]]; then
+  HTTP_PORT=$PORT
+  if [[ "$HTTP_PORT" == "" ]]; then HTTP_PORT=8080; fi
+fi
+if [[ "$HTTPS_PORT" == "" ]]; then
+  HTTPS_PORT=4433
+fi
+
+# HTTP_PORT=$(echo $HTTP_PORT || echo $PORT || echo '8080')
+HTTPS_PORT=$(echo $HTTPS_PORT || echo '4433')
+ULIMIT=10240
+
+OPENRESTY_NAME="ngx_openresty"
+OPENRESTY_PATH="$VENDOR/$OPENRESTY_NAME"
+OPENRESTY_NGINX_NAME="nginx"
+OPENRESTY_NGINX_VERSION="1.4.3"
+OPENRESTY_NGINX_PATH="$OPENRESTY_PATH/build/$OPENRESTY_NGINX_NAME-$OPENRESTY_NGINX_VERSION"
+
+echo "$LABEL: LOCAL NGINX BIN: $OPENRESTY_NGINX_PATH"
 
 PID_FILE="$TMP/nginx.pid"
 SID_FILE="$TMP/nginx.sid"
@@ -11,62 +37,44 @@ DEFAULT_CONFIG_PATH="$PWD/config"
 CONFIG_PATH="$TMP/config"
 CONFIG_FILE="$CONFIG_PATH/nginx.conf"
 
-if [[ $1 == 'openresty' ]]; then
-  NGINX_NAME='ngx_openresty'
-  NGINX_TAG='v1.2.1.7'
-  NGINX_PATH="$VENDOR/ngx_openresty-v1.2.1.7/ngx_openresty-1.2.1.7/build/nginx-1.2.1"
-  echo "openresty-local" > $SID_FILE
-else
-  NGINX_NAME='nginx'
-  NGINX_TAG='stable-1.2'
-  NGINX_PATH="$VENDOR/nginx-stable-1.2"
-  echo "nginx-local" > $SID_FILE
-fi
+echo "openresty-local" > $SID_FILE
 
-mkdir -p $LOG
-mkdir -p $TMP
+echo "$LABEL: ROOT $ROOT"
 
-echo "[nginx-start]: ROOT $ROOT"
-
-if [[ -d "$NGINX_PATH/objs" ]]; then
+if [[ -d "$OPENRESTY_NGINX_PATH" ]]; then
   # nginx: local/sandboxed
-  BIN="$NGINX_PATH/objs/nginx"
+  BIN="$OPENRESTY_NGINX_PATH/objs/nginx"
 else
   # nginx: global/shared
-  BIN="nginx \
-        --uwsgi_temp_path $TMP/uwsgi_temp \
-        --fastcgi_temp_path $TMP/fastcgi_temp \
-        --scgi_temp_path $TMP/scgi_temp \
-        --proxy_temp_path $TMP/proxy_temp \
-        --client_body_temp_path $TMP/client_body_temp"
+  BIN="nginx"
 fi
 
-echo "[nginx-start]: BIN $BIN"
+echo "$LABEL: USING BIN $BIN"
 
-echo "[nginx-stop]: GENERATE $DEFAULT_CONFIG_PATH > $CONFIG_PATH"
+echo "$LABEL: GENERATE $DEFAULT_CONFIG_PATH > $CONFIG_PATH"
 rm -rf $CONFIG_PATH
 cp -r $DEFAULT_CONFIG_PATH $CONFIG_PATH
 
-if [ -z $PORT ]; then
-  echo "[nginx-start]: PORT -"
-else
-  echo "[nginx-start]: PORT $PORT"
-  sed -i '' -e 's/daemon on/daemon off/g' "$CONFIG_PATH/nginx.conf"
-  sed -i '' -e "s/listen [0-9]+ default;/listen $(echo $PORT || echo '8080') default;/g" $CONFIG_PATH/sites/default.conf
-fi
+echo "$LABEL: HTTP PORT $HTTP_PORT"
+echo "$LABEL: HTTPS PORT $HTTPS_PORT"
+# sed -i '' -e 's/daemon on/daemon off/g' "$CONFIG_PATH/nginx.conf"
+sed -i '' -e "s/listen\ *80[0-9]*\ *default/listen $HTTP_PORT default/g" "$CONFIG_PATH/nginx.conf"
+sed -i '' -e "s/listen\ *443[0-9]*\ *default/listen $HTTPS_PORT default/g" "$CONFIG_PATH/nginx.conf"
+# cat "$CONFIG_PATH/nginx.conf"
 
 if [[ -s $PID_FILE ]]; then
-  echo "[nginx-start]: INFO Stopping Nginx in: $ROOT"
-  ( $BIN -s quit -p `pwd`/ -c $CONFIG_FILE ) && echo "[nginx-start]: RESTART"
+  echo "$LABEL: INFO Stopping Nginx in: $ROOT"
+  ( $BIN -s quit -p `pwd`/ -c $CONFIG_FILE ) && echo "$LABEL: RESTART"
 fi
 
-echo "[nginx-start]: INFO Starting Nginx in: $ROOT"
-( $BIN -p `pwd`/ -c $CONFIG_FILE && echo '[nginx-start]: OK' ) || echo "[nginx-start]: FAIL"
+echo "$LABEL: INFO Starting Nginx in: $ROOT"
+ulimit -n $ULIMIT
+( $BIN -p `pwd`/ -c $CONFIG_FILE && echo '$LABEL: OK' ) || echo "$LABEL: FAIL"
 
 # NOTE: If Nginx config 'daemon off;' is set no PID is written out becuase of the blocking call - not sure how to do that in a simple way.
 
 if [[ -f $PID_FILE ]]; then
-  echo "[nginx-start]: PID $(cat $PID_FILE)"
+  echo "$LABEL: PID $(cat $PID_FILE)"
 else
-  echo "[nginx-start]: PID -"
+  echo "$LABEL: PID -"
 fi

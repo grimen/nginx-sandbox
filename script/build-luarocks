@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+VENDOR="$ROOT/vendor"
+CORES=$(sysctl -n hw.ncpu)
+PREFIX="$VENDOR/install/usr/local"
+
+mkdir -p "$VENDOR"
+
+LUAROCKS_NAME="zlib"
+LUAROCKS_VERSION="2.1.1"
+LUAROCKS_TAG="$LUAROCKS_VERSION"
+LUAROCKS_SOURCE="$LUAROCKS_NAME-$LUAROCKS_TAG"
+LUAROCKS_URL="http://luarocks.org/releases/$LUAROCKS_NAME-$LUAROCKS_TAG.tar.gz"
+LUAROCKS_SOURCE_PATH="$VENDOR/$LUAROCKS_NAME-$LUAROCKS_TAG"
+LUAROCKS_TARGET_PATH="$VENDOR/$LUAROCKS_NAME"
+
+LABEL="[$LUAROCKS_NAME-build]"
+
+if [[ -s "$LUAROCKS_SOURCE_PATH" ]]; then
+  echo "$LABEL: EXISTS $LUAROCKS_SOURCE_PATH"
+else
+  echo "$LABEL: CHECKOUT $LUAROCKS_SOURCE_PATH ($LUAROCKS_TAG) > $LUAROCKS_SOURCE_PATH"
+  cd "$VENDOR/"
+  ( wget -L "$LUAROCKS_URL" && tar xzvf "$LUAROCKS_SOURCE_PATH.tar.gz" && echo "$LABEL: OK" ) || ( echo "$LABEL: FAIL" && exit 1 )
+fi
+
+cd "$LUAROCKS_SOURCE_PATH/"
+tree -LC 1
+
+echo "$LABEL: CONFIGURE"
+( ./configure \
+  --prefix="$PREFIX/openresty/luajit" \
+  --with-lua="$PREFIX/openresty/luajit/" \
+  --lua-suffix=jit \
+  --with-lua-include="$PREFIX/openresty/luajit/include/luajit-2.0" \
+  && echo "$LABEL: CONFIGURE OK"
+) || echo "$LABEL: CONFIGURE FAIL"
+
+echo "$LABEL: MAKE"
+( make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+
+echo "$LABEL: MAKE INSTALL"
+( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
+
+# == DONE
+
+# Symlink: <NAME> -> <NAME>-<VERSION>
+echo "$LABEL: SYMLINK $LUAROCKS_TARGET_PATH -> $LUAROCKS_SOURCE_PATH"
+if [[ -L $LUAROCKS_TARGET_PATH ]]; then rm "$LUAROCKS_TARGET_PATH"; fi
+ln -s "$LUAROCKS_SOURCE_PATH" "$LUAROCKS_TARGET_PATH"

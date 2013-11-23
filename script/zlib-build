@@ -1,0 +1,47 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+VENDOR="$ROOT/vendor"
+CORES=$(sysctl -n hw.ncpu)
+PREFIX="$VENDOR/install/usr/local"
+
+mkdir -p "$VENDOR"
+
+ZLIB_NAME="zlib"
+ZLIB_VERSION="1.2.8"
+ZLIB_TAG="$ZLIB_VERSION"
+ZLIB_SOURCE="$ZLIB_NAME-$ZLIB_TAG"
+ZLIB_URL="http://zlib.net/$ZLIB_NAME-$ZLIB_TAG.tar.gz"
+ZLIB_SOURCE_PATH="$VENDOR/$ZLIB_NAME-$ZLIB_TAG"
+ZLIB_TARGET_PATH="$VENDOR/$ZLIB_NAME"
+
+LABEL="[$ZLIB_NAME-build]"
+
+if [[ -s "$ZLIB_SOURCE_PATH" ]]; then
+  echo "$LABEL: EXISTS $ZLIB_SOURCE_PATH"
+else
+  echo "$LABEL: CHECKOUT $ZLIB_SOURCE_PATH ($ZLIB_TAG) > $ZLIB_SOURCE_PATH"
+  cd "$VENDOR/"
+  ( wget -L "$ZLIB_URL" && tar xzvf "$ZLIB_SOURCE_PATH.tar.gz" && echo "$LABEL: OK" ) || ( echo "$LABEL: FAIL" && exit 1 )
+fi
+
+cd "$ZLIB_SOURCE_PATH/"
+tree -LC 1
+
+echo "$LABEL: CONFIGURE"
+( ./configure \
+  --prefix="$PREFIX" \
+  && echo "$LABEL: CONFIGURE OK"
+) || echo "$LABEL: CONFIGURE FAIL"
+
+echo "$LABEL: MAKE"
+( make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+
+echo "$LABEL: MAKE INSTALL"
+( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
+
+# == DONE
+
+# Symlink: <NAME> -> <NAME>-<VERSION>
+echo "$LABEL: SYMLINK $ZLIB_TARGET_PATH -> $ZLIB_SOURCE_PATH"
+if [[ -L $ZLIB_TARGET_PATH ]]; then rm "$ZLIB_TARGET_PATH"; fi
+ln -s "$ZLIB_SOURCE_PATH" "$ZLIB_TARGET_PATH"

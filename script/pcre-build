@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+VENDOR="$ROOT/vendor"
+CORES=$(sysctl -n hw.ncpu)
+PREFIX="$VENDOR/install/usr/local"
+
+mkdir -p "$VENDOR"
+
+PCRE_NAME="pcre"
+PCRE_VERSION="8.33"
+PCRE_TAG="$PCRE_VERSION"
+PCRE_SOURCE="$PCRE_NAME-$PCRE_TAG"
+PCRE_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/$PCRE_NAME/$PCRE_NAME-$PCRE_TAG.tar.gz"
+PCRE_SOURCE_PATH="$VENDOR/$PCRE_NAME-$PCRE_TAG"
+PCRE_TARGET_PATH="$VENDOR/$PCRE_NAME"
+
+LABEL="[$PCRE_NAME-build]"
+
+if [[ -s "$PCRE_SOURCE_PATH" ]]; then
+  echo "$LABEL: EXISTS $PCRE_SOURCE_PATH"
+else
+  echo "$LABEL: CHECKOUT $PCRE_SOURCE_PATH ($PCRE_TAG) > $PCRE_SOURCE_PATH"
+  cd "$VENDOR/"
+  ( wget -L "$PCRE_URL" && tar xzvf "$PCRE_SOURCE_PATH.tar.gz" && echo "$LABEL: OK" ) || ( echo "$LABEL: FAIL" && exit 1 )
+fi
+
+cd "$PCRE_SOURCE_PATH/"
+tree -LC 1
+
+echo "$LABEL: CONFIGURE"
+echo "$LABEL: CONFIGURE"
+( ./configure \
+  --prefix="$PREFIX" \
+  --enable-jit \
+  && echo "$LABEL: CONFIGURE OK"
+) || echo "$LABEL: CONFIGURE FAIL"
+
+echo "$LABEL: MAKE"
+( make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+
+echo "$LABEL: MAKE INSTALL"
+( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
+
+# == DONE
+
+# Symlink: <NAME> -> <NAME>-<VERSION>
+echo "$LABEL: SYMLINK $PCRE_TARGET_PATH -> $PCRE_SOURCE_PATH"
+if [[ -L $PCRE_TARGET_PATH ]]; then rm "$PCRE_TARGET_PATH"; fi
+ln -s "$PCRE_SOURCE_PATH" "$PCRE_TARGET_PATH"

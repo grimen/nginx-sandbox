@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+VENDOR="$ROOT/vendor"
+CORES=$(sysctl -n hw.ncpu)
+PREFIX="$VENDOR/install/usr/local"
+
+mkdir -p "$VENDOR"
+
+OPENSSL_NAME="openssl"
+OPENSSL_VERSION="1.0.1e"
+OPENSSL_TAG="$OPENSSL_VERSION"
+OPENSSL_SOURCE="$OPENSSL_NAME-$OPENSSL_TAG"
+OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_NAME-$OPENSSL_TAG.tar.gz"
+OPENSSL_SOURCE_PATH="$VENDOR/$OPENSSL_NAME-$OPENSSL_TAG"
+OPENSSL_TARGET_PATH="$VENDOR/$OPENSSL_NAME"
+
+echo $OPENSSL_URL
+LABEL="[$OPENSSL_NAME-build]"
+
+if [[ -s "$OPENSSL_SOURCE_PATH" ]]; then
+  echo "$LABEL: EXISTS $OPENSSL_SOURCE_PATH"
+else
+  echo "$LABEL: CHECKOUT $OPENSSL_SOURCE_PATH ($OPENSSL_TAG) > $OPENSSL_SOURCE_PATH"
+  cd "$VENDOR/"
+  ( wget -L "$OPENSSL_URL" && tar xzvf "$OPENSSL_SOURCE_PATH.tar.gz" && echo "$LABEL: OK" ) || ( echo "$LABEL: FAIL" && exit 1 )
+fi
+
+cd "$OPENSSL_SOURCE_PATH/"
+tree -LC 1
+
+
+echo "$LABEL: CONFIGURE"
+# See:
+#   - http://www.cgicentral.net/400CS/Docs/openssl/INSTALL.openssl.html
+#   - http://www.stringcat.com/company_blog/2012/03/22/compiling-openssl-on-a-macbook-air/
+#   - https://github.com/mxcl/homebrew/blob/master/Library/Formula/openssl.rb
+( ./configure \
+  --prefix="$PREFIX" \
+  --openssldir="$PREFIX/openssl" \
+  zlib-dynamic \
+  shared \
+  darwin64-x86_64-cc \
+  enable-ec_nistp_64_gcc_128 \
+  && echo "$LABEL: CONFIGURE OK"
+) || echo "$LABEL: CONFIGURE FAIL"
+
+echo "$LABEL: MAKE"
+( make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+
+echo "$LABEL: MAKE INSTALL"
+( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
+
+# REVIEW:
+# security find-certificate -a -p /Library/Keychains/System.keychain > "$PREFIX/openssl/osx_cert.pem"
+# security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> '#$PREFIX/openssl/osx_cert.pem
+
+# == DONE
+
+# Symlink: <NAME> -> <NAME>-<VERSION>
+echo "$LABEL: SYMLINK $OPENSSL_TARGET_PATH -> $OPENSSL_SOURCE_PATH"
+if [[ -L $OPENSSL_TARGET_PATH ]]; then rm "$OPENSSL_TARGET_PATH"; fi
+ln -s "$OPENSSL_SOURCE_PATH" "$OPENSSL_TARGET_PATH"

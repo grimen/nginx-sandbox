@@ -3,27 +3,41 @@
   <head>
     <title>Nginx Sandbox</title>
 
-    <script type="text/javascript">
-      window.onload = function () {
-        var webkit = /chrome/i.test(navigator.userAgent)
-        if (webkit)
-          document.getElementById('logo').className += 'fancy';
-      }
-    </script>
-
-    <style type="text/css">
-      .fancy {
-        color: transparent;
-        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2), color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22));
-        -webkit-background-clip: text;
+    <style>
+      body, html {
+        /*width: 2000px;*/
+        /*width: 800px;
+        height: 100%;*/
       }
 
-      #logo {
+      pre {
         font-family: monospace;
         font-size: 4px;
         padding: 0 10px;
       }
+
+      .fancy {
+        color: transparent;
+
+        background-image: -moz-linear-gradient(left, #f22 0%, #f2f 15%, #22f 30%, #2ff 45%, #2f2 60%, #2f2 75%, #ff2 90%, #f22 100%);
+        background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, #f22), color-stop(15%, #f2f), color-stop(30%, #22f), color-stop(45%, #2ff), color-stop(60%, #2f2), color-stop(75%, #2f2), color-stop(90%, #ff2), color-stop(100%, #f22));
+        background-image: -webkit-linear-gradient(left top, right top, color-stop(0%, #f22), color-stop(15%, #f2f), color-stop(30%, #22f), color-stop(45%, #2ff), color-stop(60%, #2f2), color-stop(75%, #2f2), color-stop(90%, #ff2), color-stop(100%, #f22));
+        background-image: -o-linear-gradient(left, #f22 0%, #f2f 15%, #22f 30%, #2ff 45%, #2f2 60%, #2f2 75%, #ff2 90%, #f22 100%);
+        background-image: linear-gradient(left, #f22 0%, #f2f 15%, #22f 30%, #2ff 45%, #2f2 60%, #2f2 75%, #ff2 90%, #f22 100%);
+
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -o-background-clip: text;
+        background-clip: text;
+      }
     </style>
+
+    <script>
+      window.onload = function () {
+        var webkit = /chrome/i.test(navigator.userAgent)
+        if (webkit) document.getElementById('logo').className += 'fancy';
+      }
+    </script>
   </head>
   <body>
     <pre id="logo">

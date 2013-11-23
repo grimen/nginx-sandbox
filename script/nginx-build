@@ -1,0 +1,147 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+TMP="$PWD/tmp"
+VENDOR="$ROOT/vendor"
+CORES=$(sysctl -n hw.ncpu)
+PREFIX="$VENDOR/install/usr/local"
+
+mkdir -p "$VENDOR"
+mkdir -p "$PREFIX"
+
+OPENRESTY_NAME="ngx_openresty"
+OPENRESTY_VERSION="1.4.3.3"
+OPENRESTY_TAG="$OPENRESTY_VERSION"
+OPENRESTY_SOURCE="$OPENRESTY_NAME-$OPENRESTY_TAG"
+OPENRESTY_URL="http://openresty.org/download/$OPENRESTY_NAME-$OPENRESTY_TAG.tar.gz"
+OPENRESTY_SOURCE_PATH="$VENDOR/$OPENRESTY_NAME-$OPENRESTY_TAG"
+OPENRESTY_TARGET_PATH="$VENDOR/$OPENRESTY_NAME"
+
+LABEL="[$OPENRESTY_NAME-build]"
+
+if [[ -s "$OPENRESTY_SOURCE_PATH" ]]; then
+  echo "$LABEL: EXISTS $OPENRESTY_SOURCE_PATH"
+else
+  echo "$LABEL: CHECKOUT $OPENRESTY_SOURCE_PATH ($OPENRESTY_TAG) > $OPENRESTY_SOURCE_PATH"
+  cd "$VENDOR/"
+  ( wget -L "$OPENRESTY_URL" && tar xzvf "$OPENRESTY_SOURCE_PATH.tar.gz" && echo "$LABEL: OK" ) || ( echo "$LABEL: FAIL" && exit 1 )
+fi
+
+cd "$OPENRESTY_SOURCE_PATH/"
+tree -LC 1
+
+mkdir -p "$TMP/client_temp"
+mkdir -p "$TMP/proxy_temp"
+mkdir -p "$TMP/fastcgi_proxy_temp"
+mkdir -p "$TMP/uwsgi_proxy_temp"
+mkdir -p "$TMP/scgi_proxy_temp"
+
+CC_PATH="$PREFIX/include"
+LD_PATH="$PREFIX/lib"
+OPENRESTY_PATH="$PREFIX/openresty"
+OPENSSL_PATH="$VENDOR/openssl"
+PCRE_PATH="$VENDOR/pcre"
+ZLIB_PATH="$VENDOR/zlib"
+
+# OSX: Required for custom OpenSSL build.
+SYSTEM="Darwin"
+MACHINE="x86_64"
+KERNEL_BITS=64
+export SYSTEM
+export MACHINE
+export KERNEL_BITS
+
+echo "$LABEL: CONFIGURE"
+# OSX/OpenSSL/SPDY issue: https://www.ruby-forum.com/topic/4416015
+./configure \
+  --prefix="$PREFIX" \
+  --with-cc-opt="-I $CC_PATH" \
+  --with-ld-opt="-L $LD_PATH" \
+  --with-luajit \
+  --with-pcre="$PCRE_PATH" \
+  --with-pcre-jit \
+  --with-zlib="$ZLIB_PATH" \
+  --with-openssl="$OPENSSL_PATH" \
+  --without-mail_pop3_module \
+  --without-mail_imap_module \
+  --without-mail_smtp_module \
+  --without-http_auth_basic_module \
+  --without-http_autoindex_module \
+  --without-http_browser_module \
+  --without-http_empty_gif_module \
+  --without-http_fastcgi_module \
+  --without-http_geo_module \
+  --without-http_memcached_module \
+  --without-http_scgi_module \
+  --without-http_uwsgi_module \
+  --with-http_addition_module \
+  --with-http_gzip_static_module \
+  --with-http_ssl_module \
+  --with-http_sub_module \
+  --with-http_spdy_module \
+  --with-ipv6 \
+  --with-poll_module \
+  --with-select_module \
+  --with-debug \
+  # --http-client-body-temp-path="$TMP/client_temp" \
+  # --http-proxy-temp-path="$TMP/proxy_temp" \
+  # --http-fastcgi-body-temp-path="$TMP/fastcgi_proxy_temp" \
+  # --http-uwsgi-body-temp-path="$TMP/uwsgi_proxy_temp" \
+  # --http-scgi-body-temp-path="$TMP/scgi_proxy_temp" \
+  # --with-md5-asm \
+  # --with-sha1-asm \
+  # --user== \
+  # --group== \
+  # --builddir= \
+  # --conf-path=
+  # --sbin-path=
+  # --error-log-path=
+  # --http-log-path=
+  # --pid-path=
+  # --lock-path=
+  # --without-http \
+  # --without-http_access_module \
+  # --without-http_gzip_module \
+  # --without-http_headers_module \
+  # --without-http_limit_req_module \
+  # --without-http_limit_conn_module \
+  # --without-http_map_module \
+  # --without-http_proxy_module \
+  # --without-http_referer_module \
+  # --without-http_rewrite_module \
+  # --without-http_session_log_module \
+  # --without-http_status_module \
+  # --without-http_ssi_module \
+  # --without-http_split_clients_module \
+  # --without-http_upstream_module \
+  # --without-http_upstream_ip_hash_module \
+  # --without-http_userid_module \
+  # --with-mail \
+  # --with-http_geoip_module \
+  # --with-http_gunzip_module \
+  # --with-google_perftools_module \
+  # --with-http_flv_module \
+  # --with-http_degradation_module \
+  # --with-http_image_filter_module \
+  # --with-http_mp4_module \
+  # --with-http_perl_module \
+  # --with-http_random_index_module \
+  # --with-http_realip_module \
+  # --with-http_secure_link_module \
+  # --with-http_stub_status_module \
+  # --with-http_dav_module \
+  # --with-http_xslt_module \
+
+echo "$LABEL: MAKE"
+# ( DESTDIR="$PREFIX" make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+( make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+
+echo "$LABEL: MAKE INSTALL"
+# ( DESTDIR="$PREFIX" make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
+( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
+
+# == DONE
+
+# Symlink: <NAME> -> <NAME>-<VERSION>
+echo "$LABEL: SYMLINK $OPENRESTY_TARGET_PATH -> $OPENRESTY_SOURCE_PATH"
+if [[ -L $OPENRESTY_TARGET_PATH ]]; then rm "$OPENRESTY_TARGET_PATH"; fi
+ln -s "$OPENRESTY_SOURCE_PATH" "$OPENRESTY_TARGET_PATH"
