@@ -39,8 +39,6 @@ echo "$LABEL: MAKE"
 echo "$LABEL: MAKE INSTALL"
 ( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
 
-# == DONE
-
 # Symlink: <NAME> -> <NAME>-<VERSION>
 echo "$LABEL: SYMLINK $ZLIB_TARGET_PATH -> $ZLIB_SOURCE_PATH"
 if [[ -L $ZLIB_TARGET_PATH ]]; then rm "$ZLIB_TARGET_PATH"; fi

@@ -3,12 +3,13 @@
 
 local data = '[app.lua]: Hello world!'
 
-ngx.header.content_type = 'text/html';
+ngx.header.content_type = 'text/plain';
 ngx.status = 200
 
 ngx.log(ngx.OK, data)
 
 -- ngx.say(ngx.var.root)
+-- ngx.say(ngx.var.prefix)
 ngx.say(data)
 
 ngx.exit(ngx.HTTP_OK)

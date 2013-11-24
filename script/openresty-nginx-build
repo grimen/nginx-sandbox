@@ -64,7 +64,6 @@ echo "$LABEL: CONFIGURE"
   --without-mail_pop3_module \
   --without-mail_imap_module \
   --without-mail_smtp_module \
-  --without-http_auth_basic_module \
   --without-http_autoindex_module \
   --without-http_browser_module \
   --without-http_empty_gif_module \
@@ -100,6 +99,7 @@ echo "$LABEL: CONFIGURE"
   # --lock-path=
   # --without-http \
   # --without-http_access_module \
+  # --without-http_auth_basic_module \
   # --without-http_gzip_module \
   # --without-http_headers_module \
   # --without-http_limit_req_module \
@@ -138,8 +138,6 @@ echo "$LABEL: MAKE"
 echo "$LABEL: MAKE INSTALL"
 # ( DESTDIR="$PREFIX" make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
 ( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
-
-# == DONE
 
 # Symlink: <NAME> -> <NAME>-<VERSION>
 echo "$LABEL: SYMLINK $OPENRESTY_TARGET_PATH -> $OPENRESTY_SOURCE_PATH"

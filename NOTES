@@ -4,11 +4,14 @@ NGINX INTERNALS
   - http://www.slideshare.net/joshzhu/nginx-internals
 
 NGINX CONFIG
-  - http://agentzh.org/misc/nginx/agentzh-nginx-tutorials-enuk.html
+  - http://openresty.org/download/agentzh-nginx-tutorials-en.html
 
 NGINX MODULE DEVELOPMENT
   - http://evanmiller.org/nginx-modules-guide.html
   - https://github.com/simpl/ngx_devel_kit
+
+NGINX BUILDS
+  - https://github.com/ezmobius/super-nginx
 
 NGINX PROXY
   - http://wiki.nginx.org/HttpProxyModule
@@ -25,11 +28,13 @@ NGINX SECURITY:
 
 NGINX WEBSOCKETS
   - https://medium.com/p/1778601c9e05
+  - https://github.com/agentzh/lua-resty-websocket/issues/1
 
 NGINX TCP
   - https://github.com/bigplum/nginx-tcp-lua-module
 
 NGINX LUA
+  - http://3scale.github.io/2013/01/09/augment-your-api-without-touching-it
   - http://blog.cloudflare.com/pushing-nginx-to-its-limit-with-lua
   - http://londonlua.org/scripting_nginx_with_lua/slides.html
   - http://openresty.org/#DynamicRoutingBasedOnRedis
@@ -40,6 +45,9 @@ NGINX LUA
 
 NGINX LUA REDIS
   - http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache
+
+NGINX MONGO
+  - https://github.com/simpl/ngx_mongo
 
 NGINX LUA OAUTH
   - http://chairnerd.seatgeek.com/oauth-support-for-nginx-with-lua

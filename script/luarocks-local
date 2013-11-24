@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+VENDOR="$ROOT/vendor"
+SCRIPT="$ROOT/script"
+CORES=$(sysctl -n hw.ncpu)
+PREFIX="$VENDOR/install/usr/local"
+
+mkdir -p "$VENDOR"
+
+$LUAROCKS_BIN_PATH = "$PREFIX/luajit/bin/luarocks"
+$LUAROCKS_BIN_PATH  $*

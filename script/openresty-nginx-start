@@ -10,6 +10,7 @@ mkdir -p $LOG
 mkdir -p $TMP
 
 rm -rf "$LOG/*"
+rm -rf "$TMP/*"
 
 if [[ "$HTTP_PORT" == "" ]]; then
   HTTP_PORT=$PORT

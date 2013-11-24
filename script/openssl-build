@@ -54,8 +54,6 @@ echo "$LABEL: MAKE INSTALL"
 # security find-certificate -a -p /Library/Keychains/System.keychain > "$PREFIX/openssl/osx_cert.pem"
 # security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> '#$PREFIX/openssl/osx_cert.pem
 
-# == DONE
-
 # Symlink: <NAME> -> <NAME>-<VERSION>
 echo "$LABEL: SYMLINK $OPENSSL_TARGET_PATH -> $OPENSSL_SOURCE_PATH"
 if [[ -L $OPENSSL_TARGET_PATH ]]; then rm "$OPENSSL_TARGET_PATH"; fi

@@ -1,4 +1,6 @@
 
+-- Example: Redis
+
 local redis = require "resty.redis"
 local red = redis:new()
 

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nginx/Lua WebSocket</title>
+</head>
+<body>
+
+  <style>
+    body {
+      margin: 30px;
+      font-family: helvetica;
+      font-size: 12px;
+    }
+
+    main {
+      display block;
+    }
+
+    h1 {
+      font-weight: normal;
+    }
+
+    h1 strong {
+      font-weight: bold;
+    }
+
+    #status {
+      margin-left: 5px;
+      font-family: monospace;
+    }
+
+    #console, #message {
+      font-family: monospace;
+      font-size: 12px;
+      border: 1px solid #ddd;
+      outline: none;
+    }
+
+    #send, #connect {
+      font-weight: bold;
+    }
+
+    #message:focus {
+      border-color: #ccc;
+    }
+  </style>
+
+  <script>
+    var WS = function(){};
+
+    WS.connect = function () {
+      WS.log.clear();
+
+      if (!!WS.socket) {
+        return WS.log('already connected');
+      }
+
+      if (WS.tls) {
+        WS.protocol = 'wss';
+      } else {
+        WS.protocol = 'ws';
+      }
+
+      WS.url = WS.protocol + '://' + window.location.host + '/examples/websocket';
+
+      WS.log('[client]: CONNECT', WS.url);
+
+      WS.socket = new WebSocket(WS.url);
+
+      WS.socket.onopen = function () {
+        WS.log('[server]: OPEN');
+        WS.socket.send('ping')
+      };
+
+      WS.socket.onerror = function (err) {
+        WS.log('[server]: ERROR', err);
+      };
+
+      WS.socket.onmessage = function (e) {
+        // WS.log('[server]: MSG', e);
+
+        var data = e.data;
+
+        if (e.data instanceof Blob) {
+          var r = new FileReader();
+          r.onloadend = function() {
+            var blob_text = r.result;
+
+            data = ['<Blob', 'type=', e.data.type, 'size=', e.data.size, '>', '=', r.result].join(' ');
+
+            WS.log('[server]: MESSAGE', '' + data, e.data);
+          };
+          r.readAsBinaryString(e.data);
+        }
+        else {
+          WS.log('[server]: MESSAGE', '' + data, e.data);
+        }
+      };
+
+      WS.socket.onclose = function () {
+        WS.log('[server]: CLOSE');
+
+        WS.socket = null;
+      };
+
+      return false;
+    };
+
+    WS.reconnect = function () {
+      if (!WS.socket) {
+        WS.disconnect();
+      }
+      WS.connect();
+    }
+
+    WS.disconnect = function () {
+      WS.log('[client]: CLOSE');
+
+      if (!WS.socket) {
+        return WS.log('already disconnected');
+      }
+
+      WS.socket.close();
+
+      return false;
+    };
+
+    WS.send = function () {
+      if (!WS.socket) {
+        return WS.log('please connect first');
+      }
+
+      var text = WS.element('message');
+      var data = text.value;
+
+      // text.value = "";
+
+      WS.log('[client]: ' + data);
+      WS.socket.send(data);
+
+      return false;
+    };
+
+    WS.log = function (label, parsed_data, original_data) {
+      var textarea = WS.element('console');
+
+      textarea.appendChild(document.createTextNode([label || '', parsed_data || ''].join(' ') + '\n'));
+      textarea.scrollTop = textarea.scrollHeight;
+
+      console.log(label, parsed_data || '', original_data || '');
+
+      return false;
+    };
+
+    WS.log.clear = function () {
+      var textarea = WS.element('console');
+      // textarea.innerHTML = '';
+      WS.log('---');
+    };
+
+    WS.element = function(id) {
+      return document.getElementById(id);
+    };
+
+    setInterval(function () {
+      if (WS.socket) {
+        WS.element('connect').setAttribute('disabled', '');
+        WS.element('tls').setAttribute('disabled', '');
+        WS.element('disconnect').removeAttribute('disabled');
+        WS.element('message').removeAttribute('disabled');
+        WS.element('send').removeAttribute('disabled');
+        WS.element('status').innerText = 'CONNECTED.';
+
+        WS.tls = WS.element('tls').checked;
+      }
+      else {
+        WS.element('connect').removeAttribute('disabled');
+        WS.element('disconnect').setAttribute('disabled', '');
+        WS.element('tls').removeAttribute('disabled', '');
+        WS.element('message').setAttribute('disabled', '');
+        WS.element('send').setAttribute('disabled', '');
+        WS.element('status').innerText = 'NOT CONNECTED.';
+
+        WS.tls = WS.element('tls').checked;
+      }
+
+      if (/not/i.test(WS.element('status').innerText)) {
+        WS.element('status').style.color = 'red';
+      } else {
+        WS.element('status').style.color = 'green';
+      }
+    }, 200);
+
+  </script>
+
+  <main id="ws-test">
+    <h1><strong>Test:</strong> Nginx/Lua WebSocket</h1>
+
+    <form onsubmit="return WS.send();">
+      <div>
+        <button id="connect" type="button" onclick="return WS.connect();">Connect</button>
+        <button id="disconnect" type="button" onclick="return WS.disconnect();">Disconnect</button>
+        <span id="status"></span>
+      </div>
+      <br>
+      <input id="tls" type="checkbox" value="1">Use secure WebSocket (TLS)
+      <br>
+      <br>
+
+      <textarea id="console" cols="80" rows="20" readonly disabled></textarea>
+      <br>
+
+      <div>
+        <textarea id="message" type="text" value="Hello from client!" cols="50" rows="3">Hello from client!</textarea>
+        <br>
+        <button id="send" type="submit">Send</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

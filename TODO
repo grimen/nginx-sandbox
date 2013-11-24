@@ -1,2 +1,18 @@
 
-- Examples using: http://3scale.github.io/2013/01/09/augment-your-api-without-touching-it/
+- [WIP]: Proxy cache defaults.
+      * http://reviewsignal.com/blog/2013/08/29/reverse-proxy-and-cache-server-with-nginx/
+
+- [FEATURE]: .env file for setting ENV variables for the project.
+
+- [FEATURE]: PURGE cache
+      * https://github.com/FRiCKLE/ngx_cache_purge
+
+- [FEATURE]: A solid Nginx/OpenResty Docker package.
+
+- [FEATURE]: Script for testing local Nginx .
+
+- [FEATURE]: Mess around with SPDY - and create some Lua demo.
+
+- [BUG]: Make WSS:// work - probably SSL issue.
+
+- [BUG]: Non-OpenResty Nginx build with same features? #geeky

@@ -41,8 +41,6 @@ echo "$LABEL: MAKE"
 echo "$LABEL: MAKE INSTALL"
 ( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"
 
-# == DONE
-
 # Symlink: <NAME> -> <NAME>-<VERSION>
 echo "$LABEL: SYMLINK $PCRE_TARGET_PATH -> $PCRE_SOURCE_PATH"
 if [[ -L $PCRE_TARGET_PATH ]]; then rm "$PCRE_TARGET_PATH"; fi
