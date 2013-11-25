@@ -25,6 +25,7 @@ NGINX RATE LIMITING
 NGINX PERFORMANCE:
   - http://www.lifelinux.com/how-to-optimize-nginx-for-maximum-performance
   - http://dak1n1.com/blog/12-nginx-performance-tuning
+  - http://blog.martinfjordvald.com/2011/04/optimizing-nginx-for-high-traffic-loads
 
 NGINX SECURITY:
   - https://coderwall.com/p/4k6wdq
@@ -32,6 +33,7 @@ NGINX SECURITY:
 NGINX WEBSOCKETS
   - https://medium.com/p/1778601c9e05
   - https://github.com/agentzh/lua-resty-websocket/issues/1
+  - http://blog.martinfjordvald.com/2013/02/websockets-in-nginx
 
 NGINX TCP
   - https://github.com/bigplum/nginx-tcp-lua-module
