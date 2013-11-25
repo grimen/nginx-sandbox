@@ -87,8 +87,8 @@ end
 
 -- or just close the connection right away:
 local ok, err = redis:close()
-if not ok then
-  ngx.log(ngx.ERR, "failed to close: ", err)
-  ngx.say("failed to close: ", err)
-  return
-end
+-- if not ok then
+--   ngx.log(ngx.ERR, "failed to close: ", err)
+--   ngx.say("failed to close: ", err)
+--   return
+-- end
