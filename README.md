@@ -21,7 +21,7 @@ The default Nginx setup contains mainly:
 * Default Nginx configs - with comments/documentation
 * Example code:
     * Lua basic demo
-    * Lua/Luarocks module demo
+    * Lua/LuaRocks module demo
     * Lua/WebSockets ping/pong demo - incl. client HTML page
     * Lua/Redis read/write demo
 
@@ -82,10 +82,9 @@ nginx-sandbox$ make stop
 ```
 
 
-## Advanced: Install custom Lua modules via local [`Luarocks`](http://luarocks.org)
+## Advanced: Install additional Lua modules
 
-Install local/sandboxed *Lua modules* like so:
-
+Install additional local/sandboxed *Lua modules* via local/sandboxed [`LuaRocks`](http://luarocks.org):
 
 ```bash
 nginx-sandbox$ make luarocks install md5

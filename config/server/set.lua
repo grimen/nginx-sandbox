@@ -1,0 +1,1 @@
+return ngx.cookie_time(ngx.time())

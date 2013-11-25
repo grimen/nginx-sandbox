@@ -1,12 +1,17 @@
 
 -- Example: WebSocket
+--
+-- Nginx/Lua API: https://github.com/chaoslawful/lua-nginx-module
+--
 
 -- Source: https://github.com/agentzh/lua-resty-websocket
 -- Debug: http://www.websocket.org/echo.html
 
-local server = require "resty.websocket.server"
+ngx.log(ngx.OK, 'websocket.lua')
 
-local ws, err = server:new {
+local WebSocket = require "resty.websocket.server"
+
+local ws, err = WebSocket:new {
   timeout = 10 * 1000,
   max_payload_len = 65535,
 }

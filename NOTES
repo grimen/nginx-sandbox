@@ -10,6 +10,9 @@ NGINX MODULE DEVELOPMENT
   - http://evanmiller.org/nginx-modules-guide.html
   - https://github.com/simpl/ngx_devel_kit
 
+NGINX DEBUGGING
+  - http://rtcamp.com/tutorials/nginx/debugging/
+
 NGINX BUILDS
   - https://github.com/ezmobius/super-nginx
 
@@ -32,6 +35,9 @@ NGINX WEBSOCKETS
 
 NGINX TCP
   - https://github.com/bigplum/nginx-tcp-lua-module
+
+NGINX OPENRESTY
+  - http://agentzh.org/misc/slides/ngx-openresty-ecosystem
 
 NGINX LUA
   - http://3scale.github.io/2013/01/09/augment-your-api-without-touching-it
@@ -61,3 +67,6 @@ NGINX DOCKER
 
 NGINX GRUNT
   - https://npmjs.org/package/grunt-nginx
+
+NGINX PAGESPEED
+  - https://github.com/pagespeed/ngx_pagespeed
