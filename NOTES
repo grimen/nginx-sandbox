@@ -62,6 +62,9 @@ NGINX ON HEROKU
   - https://github.com/adamwiggins/nginx-as-heroku-app
   - https://github.com/essh/heroku-buildpack-nginx
 
+NGINX AWS PROXY
+  - http://bl.ocks.org/justincormack/948423
+
 NGINX DOCKER
   - https://index.docker.io/u/senthilnayagam/openresty/
 
