@@ -59,7 +59,7 @@ nginx-sandbox$ open http://localhost:8080
 `CTRL + C` / `SIGINT`
 
 
-## Usage: Run Nginx as deamon
+## Usage: Run Nginx as daemon
 
 If `nginx.conf` contains directive `daemon on;`.
 
@@ -103,7 +103,7 @@ The build scripts may contain *OS X only* operations. Should be simple to port i
 Find development notes in [`NOTES`](https://github.com/grimen/nginx-sandbox/blob/master/NOTES).
 
 
-# Todo
+## Todo
 
 See [`TODO`](https://github.com/grimen/nginx-sandbox/blob/master/TODO).
 
