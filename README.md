@@ -111,3 +111,5 @@ See [`TODO`](https://github.com/grimen/nginx-sandbox/blob/master/TODO).
 ## License
 
 Released under the MIT license. Copyright © [Jonas Grimfelt](https://github.com/grimen)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/grimen/nginx-sandbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
