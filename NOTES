@@ -40,6 +40,7 @@ NGINX TCP
 
 NGINX OPENRESTY
   - http://agentzh.org/misc/slides/ngx-openresty-ecosystem
+  - http://agentzh.org/misc/slides/nginx-conf-scripting
 
 NGINX LUA
   - http://3scale.github.io/2013/01/09/augment-your-api-without-touching-it
@@ -53,6 +54,7 @@ NGINX LUA
 
 NGINX LUA REDIS
   - http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache
+  - Cache: http://writebox.co.uk/blogs/1/nginx-redis-and-lua-high-performance-request-caching-for-nodejs-and-ruby-on-rails
 
 NGINX MONGO
   - https://github.com/simpl/ngx_mongo
