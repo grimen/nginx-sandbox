@@ -1,19 +1,13 @@
 #! /usr/bin/env sh
-ROOT="$PWD"
-VENDOR="$PWD/vendor"
-TMP="$PWD/tmp"
-LOG="$PWD/logs"
-LABEL="$LABEL"
-PORT=8080
-
-mkdir -p $LOG
-mkdir -p $TMP
+source "./script/init"
 
 OPENRESTY_NAME="ngx_openresty"
 OPENRESTY_PATH="$VENDOR/$OPENRESTY_NAME"
 OPENRESTY_NGINX_NAME="nginx"
 OPENRESTY_NGINX_VERSION="1.4.3"
 OPENRESTY_NGINX_PATH="$OPENRESTY_PATH/build/$OPENRESTY_NGINX_NAME-$OPENRESTY_NGINX_VERSION"
+
+LABEL="[$OPENRESTY_NAME-stop]"
 
 PID_FILE="$TMP/nginx.pid"
 SID_FILE="$TMP/nginx.sid"

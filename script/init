@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+ROOT="$PWD"
+SCRIPT="$ROOT/script"
+TMP="$ROOT/tmp"
+VENDOR="$ROOT/vendor"
+
+PREFIX="$VENDOR/install/usr/local"
+
+CORES=$(sysctl -n hw.ncpu)
+
+mkdir -p "$PREFIX"
+mkdir -p "$TMP"
+mkdir -p "$VENDOR"
+
+PORT=8080
+
+ULIMIT=10240

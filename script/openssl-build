@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
-ROOT="$PWD"
-VENDOR="$ROOT/vendor"
-CORES=$(sysctl -n hw.ncpu)
-PREFIX="$VENDOR/install/usr/local"
-
-mkdir -p "$VENDOR"
+source "./script/init"
 
 OPENSSL_NAME="openssl"
 OPENSSL_VERSION="1.0.1e"
@@ -14,7 +9,6 @@ OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_NAME-$OPENSSL_TAG.tar.gz"
 OPENSSL_SOURCE_PATH="$VENDOR/$OPENSSL_NAME-$OPENSSL_TAG"
 OPENSSL_TARGET_PATH="$VENDOR/$OPENSSL_NAME"
 
-echo $OPENSSL_URL
 LABEL="[$OPENSSL_NAME-build]"
 
 if [[ -s "$OPENSSL_SOURCE_PATH" ]]; then

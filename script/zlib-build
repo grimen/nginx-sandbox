@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
-ROOT="$PWD"
-VENDOR="$ROOT/vendor"
-CORES=$(sysctl -n hw.ncpu)
-PREFIX="$VENDOR/install/usr/local"
-
-mkdir -p "$VENDOR"
+source "./script/init"
 
 ZLIB_NAME="zlib"
 ZLIB_VERSION="1.2.8"

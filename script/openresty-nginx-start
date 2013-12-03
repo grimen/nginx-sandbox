@@ -1,13 +1,7 @@
 #! /usr/bin/env sh
-ROOT="$PWD"
-CONFIG="$PWD/config"
-VENDOR="$PWD/vendor"
-TMP="$PWD/tmp"
-LOG="$PWD/logs"
-LABEL="[nginx-start]"
+source "./script/init"
 
-mkdir -p $LOG
-mkdir -p $TMP
+cat "./logo.txt"
 
 rm -rf "$LOG/*"
 rm -rf "$TMP/*"
@@ -22,13 +16,14 @@ fi
 
 # HTTP_PORT=$(echo $HTTP_PORT || echo $PORT || echo '8080')
 HTTPS_PORT=$(echo $HTTPS_PORT || echo '4433')
-ULIMIT=10240
 
 OPENRESTY_NAME="ngx_openresty"
 OPENRESTY_PATH="$VENDOR/$OPENRESTY_NAME"
 OPENRESTY_NGINX_NAME="nginx"
 OPENRESTY_NGINX_VERSION="1.4.3"
 OPENRESTY_NGINX_PATH="$OPENRESTY_PATH/build/$OPENRESTY_NGINX_NAME-$OPENRESTY_NGINX_VERSION"
+
+LABEL="[$OPENRESTY_NAME-stop]"
 
 echo "$LABEL: LOCAL NGINX BIN: $OPENRESTY_NGINX_PATH"
 

@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
-ROOT="$PWD"
-VENDOR="$ROOT/vendor"
-CORES=$(sysctl -n hw.ncpu)
-PREFIX="$VENDOR/install/usr/local"
-
-mkdir -p "$VENDOR"
+source "./script/init"
 
 PCRE_NAME="pcre"
 PCRE_VERSION="8.33"

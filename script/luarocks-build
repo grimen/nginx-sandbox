@@ -1,11 +1,5 @@
 #!/usr/bin/env sh
-ROOT="$PWD"
-VENDOR="$ROOT/vendor"
-SCRIPT="$ROOT/script"
-CORES=$(sysctl -n hw.ncpu)
-PREFIX="$VENDOR/install/usr/local"
-
-mkdir -p "$VENDOR"
+source "./script/init"
 
 LUAROCKS_NAME="luarocks"
 LUAROCKS_VERSION="2.1.1"

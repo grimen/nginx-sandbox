@@ -1,12 +1,5 @@
 #!/usr/bin/env sh
-ROOT="$PWD"
-TMP="$PWD/tmp"
-VENDOR="$ROOT/vendor"
-CORES=$(sysctl -n hw.ncpu)
-PREFIX="$VENDOR/install/usr/local"
-
-mkdir -p "$VENDOR"
-mkdir -p "$PREFIX"
+source "./script/init"
 
 OPENRESTY_NAME="ngx_openresty"
 OPENRESTY_VERSION="1.4.3.3"
