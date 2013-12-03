@@ -4,12 +4,57 @@
     <title>Nginx Sandbox</title>
 
     <style>
-      body, html {}
+      body, html {
+        font-family: monospace;
+        font-size: 12px;
+      }
+
+      main {
+        display: block;
+        margin-top: 15px;
+        margin-left: 180px;
+      }
+
+      h2 {
+        font-family: helvetica;
+        font-size: 20px;
+        text-transform: uppercase;
+        color: #eee;
+        font-weight: 200;
+        margin: 0 0 15px;
+      }
+
+      nav {
+        display: block;
+        margin-right: 50px;
+        float: left;
+      }
 
       pre {
         font-family: monospace;
         font-size: 4px;
         padding: 0 10px;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        padding-bottom: 5px;
+      }
+
+      a {
+        color: #aaa;
+        font-family: monospace;
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #000;
+        /*text-decoration: underline;*/
       }
 
       .fancy {
@@ -91,5 +136,42 @@
 
 
     </pre>
+
+    <main>
+      <nav>
+        <h2># Core</h2>
+        <ul>
+          <li><a href="/examples/base64">/examples/base64</a></li>
+          <li><a href="/examples/basicauth">/examples/basicauth</a></li>
+          <li><a href="/examples/body">/examples/body</a></li>
+          <li><a href="/examples/echo">/examples/echo</a></li>
+          <li><a href="/examples/env">/examples/env</a></li>
+          <li><a href="/examples/escapeuri">/examples/escapeuri</a></li>
+          <li><a href="/examples/ip">/examples/ip</a></li>
+          <li><a href="/examples/jsonp?callback=hello">/examples/jsonp</a></li>
+          <li><a href="/examples/md5">/examples/md5</a></li>
+          <li><a href="/examples/prefetch">/examples/prefetch</a></li>
+          <li><a href="/examples/redirect">/examples/redirect</a></li>
+          <li><a href="/examples/rewrite">/examples/rewrite</a></li>
+          <li><a href="/examples/session">/examples/session</a></li>
+          <li><a href="/examples/spdyhint">/examples/spdyhint</a></li>
+          <li><a href="/examples/spdypush">/examples/spdypush</a></li>
+          <li><a href="/examples/status">/examples/status</a></li>
+          <li><a href="/examples/variables">/examples/variables</a></li>
+        </ul>
+      </nav>
+
+      <nav>
+        <h2># Lua</h2>
+        <ul>
+          <li><a href="/examples/cache.lua">/examples/cache.lua</a></li>
+          <li><a href="/examples/hello.lua">/examples/hello.lua</a></li>
+          <li><a href="/examples/luarocks.lua">/examples/luarocks.lua</a></li>
+          <li><a href="/examples/redis.lua">/examples/redis.lua</a></li>
+          <li><a href="/examples/websocket.lua">/examples/websocket.lua</a></li>
+        </ul>
+      </nav>
+    </main>
+
   </body>
 </html>
