@@ -1,0 +1,11 @@
+{
+  "name": "nginx-sandbox",
+  "version": "0.1.0",
+  "devDependencies": {
+    "matchdep": "latest",
+    "grunt": "latest",
+    "grunt-contrib-coffee": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-shell-spawn": "latest"
+  }
+}
