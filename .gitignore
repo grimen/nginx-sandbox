@@ -7,3 +7,4 @@ vendor
 *_temp
 on
 node_modules
+.vagrant
