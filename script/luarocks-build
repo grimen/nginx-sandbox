@@ -50,3 +50,4 @@ ln -s "$LUAROCKS_SOURCE_PATH" "$LUAROCKS_TARGET_PATH"
 
 echo "$LABEL: INSTALL md5 module (for show)"
 $LUAROCKS_SOURCE_BIN_PATH install md5
+$LUAROCKS_SOURCE_BIN_PATH install lua-cjson

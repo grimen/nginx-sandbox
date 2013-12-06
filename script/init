@@ -15,3 +15,7 @@ mkdir -p "$VENDOR"
 PORT=8080
 
 ULIMIT=10240
+
+echo "[init]: .ENV: $ROOT/.env\n"
+cat "$ROOT/.env"
+source "$ROOT/.env"

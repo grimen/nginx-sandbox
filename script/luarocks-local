@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 source "./script/init"
 
-$LUAROCKS_BIN_PATH = "$PREFIX/luajit/bin/luarocks"
-$LUAROCKS_BIN_PATH  $*
+LUAROCKS_BIN_PATH="$PREFIX/luajit/bin/luarocks"
+$LUAROCKS_BIN_PATH $*
