@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+dir=`dirname "$(readlink -f "$0")"`
+
+$dir/docker-build-base
+$dir/docker-build-openresty

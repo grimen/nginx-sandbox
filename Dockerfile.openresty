@@ -1,0 +1,79 @@
+#!/usr/bin/env docker
+
+# Nginx/OpenResty (Sandbox)
+#
+# VERSION               0.0.1
+#
+# BUILD:
+#   docker build -t openresty-nginx - < /vagrant/Dockerfile.openresty
+#
+# RUN:
+#   docker run -d -name openresty-nginx-1 -v /vagrant:/app -p 8080:8080 openresty-nginx
+#
+
+## FROM ubuntu:latest
+FROM openresty-nginx-base
+MAINTAINER Jonas Grimfelt <grimen@gmail.com>
+
+## REDIS
+#   - http://docker.readthedocs.org/en/v0.7-rc1/examples/linking_into_redis/
+#   - http://docs.docker.io/en/latest/use/working_with_links_names/
+# RUN apt-get install -y -q redis-server
+
+## NGINX/OPENRESTY
+WORKDIR /tmp/
+RUN wget http://openresty.org/download/ngx_openresty-1.4.3.3.tar.gz
+RUN tar -xzvf ngx_openresty-1.4.3.3.tar.gz
+WORKDIR /tmp/ngx_openresty-1.4.3.3
+RUN ./configure --with-cc-opt="-I /usr/local/include" --with-ld-opt="-L /usr/local/lib" --with-luajit --with-pcre-jit \
+  --without-mail_pop3_module \
+  --without-mail_pop3_module \
+  --without-mail_imap_module \
+  --without-mail_smtp_module \
+  --without-http_autoindex_module \
+  --without-http_browser_module \
+  --without-http_empty_gif_module \
+  --without-http_fastcgi_module \
+  --without-http_geo_module \
+  --without-http_memcached_module \
+  --without-http_scgi_module \
+  --without-http_uwsgi_module \
+  --with-http_addition_module \
+  --with-http_gzip_static_module \
+  --with-http_realip_module \
+  --with-http_ssl_module \
+  --with-http_sub_module \
+  --with-http_spdy_module \
+  --with-ipv6 \
+  --with-poll_module \
+  --with-select_module \
+  --with-debug
+
+RUN make -j$(nproc)
+RUN make install
+
+## LOCATE DB
+RUN updatedb
+
+## PATH
+ENV PATH $PATH:/usr/local/openresty/nginx/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib
+RUN ldconfig
+
+# APP
+# ENV ROOT /app
+WORKDIR /
+RUN ufw allow 80
+RUN ufw allow 8080
+RUN ufw allow 443
+
+EXPOSE 80:80
+EXPOSE 8080:8080
+EXPOSE 443:443
+
+# NOTE: Nginx `daemon` should be turned off when running in a container.
+CMD ["nginx", "-p", "/usr/local/openresty/nginx/", "-c", "/usr/local/openresty/nginx/conf/nginx.conf"]
+# CMD ["nginx", "-p", "/app/", "-c", "/app/conf/nginx.conf"]
+
+# Using `ENTRYPOINT` there's no way of running interactive shell within the container, so using `CMD` instead
+# ENTRYPOINT ["nginx"]

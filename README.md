@@ -24,7 +24,8 @@ The default Nginx setup contains mainly:
     * Lua/LuaRocks module demo
     * Lua/WebSockets ping/pong demo - incl. client HTML page
     * Lua/Redis read/write demo
-
+* Vagrant prototypes
+* Docker prototypes
 
 ## Build
 

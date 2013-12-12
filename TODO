@@ -1,19 +1,31 @@
 
 - [WIP]: Proxy cache defaults.
-      * http://reviewsignal.com/blog/2013/08/29/reverse-proxy-and-cache-server-with-nginx/
+      * http://reviewsignal.com/blog/2013/08/29/reverse-proxy-and-cache-server-with-nginx
 
-- [WIP]: .env file for setting ENV variables for the project.
+- [EXAMPLE]: Subrequest cache.
+      * https://github.com/agentzh/srcache-nginx-module
 
-- [WIP]: A solid Nginx/OpenResty Docker package.
-      * https://github.com/fgrehm/vocker
-      * https://www.docker.io/learn/dockerfile/level1/
-      * http://docs.docker.io/en/latest/use/builder/
-      * https://github.com/polvi/openresty
+- [EXAMPLE]: Stardust framework.
+      * https://github.com/bakins/stardust
 
-- [FEATURE]: PURGE cache
+- [REVIEW]: OpenResty events/chat server demo:
+      * https://github.com/cagerton/dropthat
+
+- [EXAMPLE]: Heroku buildpack:
+      * https://github.com/bakins/openresty-buildpack
+
+- [EXPERIMENT]: PURGE cache
       * https://github.com/FRiCKLE/ngx_cache_purge
+      * https://github.com/bakins/openresty-example-app
 
-- [FEATURE]: Mess around with SPDY - and create some Lua demo.
+- [EXPERIMENT]: Nginx cache scripts
+      * https://github.com/perusio/nginx-cache-purge
+      * https://github.com/bakins/nginx-cache-inspector
+
+- [EXAMPLE]: AWS proxy.
+      * http://bl.ocks.org/justincormack/948423
+
+- [EXPERIMENT]: Mess around with SPDY - and create some Lua demo.
 
 - [BUG]: Make WSS:// work - probably SSL issue.
 

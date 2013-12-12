@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Create new container instance based on Docker image "openresty-nginx" and try to run nginx in foreground to see error logs.
+docker run -v /vagrant:/app openresty-nginx nginx -p /app/ -c /app/conf/nginx.conf
