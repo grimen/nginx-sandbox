@@ -15,7 +15,7 @@ module.exports = (g) ->
     watch:
       config:
         files: [
-          'config/**/*',
+          'conf/**/*',
           'public/**/*'
         ]
         tasks: ['shell:server']

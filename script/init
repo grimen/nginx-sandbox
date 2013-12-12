@@ -3,6 +3,7 @@ ROOT="$PWD"
 SCRIPT="$ROOT/script"
 TMP="$ROOT/tmp"
 VENDOR="$ROOT/vendor"
+CONFIG="$PWD/conf"
 
 PREFIX="$VENDOR/install/usr/local"
 
