@@ -38,7 +38,7 @@ nginx-sandbox$ make build
 ...this will take a while because all dependencies (`pcre`, `openssl`, `zlib`, ...) are being compiled into sandbox as well (`./vendor/*`) for isolation reasons.
 
 
-## Usage: Run Nginx
+## Run Nginx
 
 If `nginx.conf` contains directive `daemon off;`.
 
@@ -61,7 +61,7 @@ nginx-sandbox$ open http://localhost:8080
 `CTRL + C` / `SIGINT`
 
 
-## Usage: Run Nginx as daemon
+## Run Nginx as daemon
 
 If `nginx.conf` contains directive `daemon on;`.
 
@@ -84,7 +84,32 @@ nginx-sandbox$ make stop
 ```
 
 
-## Advanced: Install additional Lua modules
+## Run Nginx as Docker container in Vagrant box
+
+**Provision Nginx using Vagrant and Docker:**
+
+```bash
+nginx-sandbox$ vagrant up
+nginx-sandbox$ vagrant provision
+```
+
+**Check status from inside:**
+
+```bash
+nginx-sandbox$ vagrant ssh
+vagrant@ubuntu$ docker ps
+vagrant@ubuntu$ curl http://localhost:80
+```
+
+**Check status from outside:**
+
+```bash
+vagrant@ubuntu$ exit
+nginx-sandbox$ curl http://localhost:8081
+```
+
+
+## Install additional Lua modules
 
 Install additional local/sandboxed *Lua modules* via local/sandboxed [`LuaRocks`](http://luarocks.org):
 

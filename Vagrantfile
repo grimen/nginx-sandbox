@@ -20,7 +20,7 @@ Vagrant.configure('2') do |config|
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
   #
-  config.vm.network :forwarded_port, guest: 80, host: 8001
+  config.vm.network :forwarded_port, guest: 80, host: 8081
 
   # Docker
   # (49000..49900).each do |port|
