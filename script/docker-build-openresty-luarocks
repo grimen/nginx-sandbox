@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Build Docker image "nginx-openresty-luarocks" based on custom Dockerfile for Nginx/OpenResty.
+docker build -rm -t nginx-openresty-luarocks - < /vagrant/Dockerfile.base-openresty-luarocks

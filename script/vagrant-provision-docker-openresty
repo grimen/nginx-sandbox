@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-dir=`dirname "$(readlink -f "$0")"`
 
-$dir/docker-build
-$dir/docker-run
+/vagrant/script/docker-build
+/vagrant/script/docker-run

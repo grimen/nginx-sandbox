@@ -8,17 +8,16 @@
 #   docker build -t openresty-nginx - < /vagrant/Dockerfile.openresty
 #
 # RUN:
-#   docker run -d -name openresty-nginx-1 -v /vagrant:/app -p 8080:8080 openresty-nginx
+#   docker run -d -v /vagrant:/app -p 8080:8080 openresty-nginx
 #
 
-## FROM ubuntu:latest
-FROM openresty-nginx-base
+FROM nginx-base:latest
 MAINTAINER Jonas Grimfelt <grimen@gmail.com>
 
-## REDIS
-#   - http://docker.readthedocs.org/en/v0.7-rc1/examples/linking_into_redis/
-#   - http://docs.docker.io/en/latest/use/working_with_links_names/
-# RUN apt-get install -y -q redis-server
+## PATH
+ENV PATH /usr/local/openresty/nginx/sbin:/usr/local/openresty/luajit/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib
+RUN ldconfig
 
 ## NGINX/OPENRESTY
 WORKDIR /tmp/
@@ -48,32 +47,17 @@ RUN ./configure --with-cc-opt="-I /usr/local/include" --with-ld-opt="-L /usr/loc
   --with-poll_module \
   --with-select_module \
   --with-debug
-
-RUN make -j$(nproc)
-RUN make install
+RUN make -j$(nproc) && make install
 
 ## LOCATE DB
 RUN updatedb
 
-## PATH
-ENV PATH $PATH:/usr/local/openresty/nginx/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib
-RUN ldconfig
-
 # APP
-# ENV ROOT /app
 WORKDIR /
-RUN ufw allow 80
-RUN ufw allow 8080
-RUN ufw allow 443
-
-EXPOSE 80:80
-EXPOSE 8080:8080
-EXPOSE 443:443
+RUN ufw allow 80 && ufw allow 8080 && ufw allow 443
+EXPOSE 80:80 8080:8080 443:443
 
 # NOTE: Nginx `daemon` should be turned off when running in a container.
-CMD ["nginx", "-p", "/usr/local/openresty/nginx/", "-c", "/usr/local/openresty/nginx/conf/nginx.conf"]
-# CMD ["nginx", "-p", "/app/", "-c", "/app/conf/nginx.conf"]
 
-# Using `ENTRYPOINT` there's no way of running interactive shell within the container, so using `CMD` instead
-# ENTRYPOINT ["nginx"]
+# Default entrypoint
+ENTRYPOINT ["nginx", "-p", "/usr/local/openresty/nginx/", "-c", "/usr/local/openresty/nginx/conf/nginx.conf"]

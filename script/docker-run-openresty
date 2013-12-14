@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+HTTP_PORT=8080
+HTTPS_PORT=4433
+
+# Create new container instance based on Docker image "nginx-openresty" and run it.
+CONTAINER_ID=$(docker run -d -v /vagrant:/app -p 80:$HTTP_PORT -p 443:$HTTPS_PORT -link redis:redis -name nginx nginx-openresty-luarocks -p /app/ -c /app/conf/nginx.conf)
+
+# Show running containers.
+docker ps
+
+# Show logs for this container.
+docker logs $CONTAINER_ID
+
+# docker kill $CONTAINER_ID

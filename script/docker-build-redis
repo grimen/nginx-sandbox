@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Build Docker image "redis".
+docker pull crosbymichael/redis:latest

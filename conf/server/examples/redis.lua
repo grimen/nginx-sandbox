@@ -16,10 +16,18 @@ redis:set_timeout(1000) -- 1 sec
 -- by a redis server:
 --     local ok, err = redis:connect("unix:/path/to/redis.sock")
 
-local ok, err = redis:connect("127.0.0.1", 6379)
+-- Docker env -> env -> defaults
+local ADDR = os.getenv("REDIS_PORT_6379_TCP_ADDR") or os.getenv("REDIS_HOSTNAME") or '127.0.0.1'
+local PORT = os.getenv("REDIS_PORT_6379_TCP_PORT") or os.getenv("REDIS_PORT") or 6379
+
+local ok, err = redis:connect(ADDR, PORT)
 
 if not ok then
   ngx.log(ngx.ERR, "failed to connect: ", err)
+  ngx.log(ngx.ERR, "REDIS_PORT_6379_TCP_ADDR: ", os.getenv("REDIS_PORT_6379_TCP_ADDR"))
+  ngx.log(ngx.ERR, "REDIS_PORT_6379_TCP_PORT: ", os.getenv("REDIS_PORT_6379_TCP_PORT"))
+  ngx.log(ngx.ERR, "ADDR: ", ADDR)
+  ngx.log(ngx.ERR, "PORT: ", PORT)
   ngx.say("failed to connect: ", err)
   return
 end

@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
-dir=`dirname "$(readlink -f "$0")"`
 
-$dir/docker-build-base
-$dir/docker-build-openresty
+# Build: Redis image.
+/vagrant/script/docker-build-redis
+
+# Build: Nginx/OpenResty image(s).
+/vagrant/script/docker-build-base
+/vagrant/script/docker-build-openresty

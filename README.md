@@ -98,6 +98,7 @@ nginx-sandbox$ vagrant provision
 ```bash
 nginx-sandbox$ vagrant ssh
 vagrant@ubuntu$ docker ps
+vagrant@ubuntu$ docker inspect nginx
 vagrant@ubuntu$ curl http://localhost:80
 ```
 
@@ -105,11 +106,11 @@ vagrant@ubuntu$ curl http://localhost:80
 
 ```bash
 vagrant@ubuntu$ exit
-nginx-sandbox$ curl http://localhost:8081
+nginx-sandbox$ curl http://localhost:8080
 ```
 
 
-## Install additional Lua modules
+## Advanced: Install additional Lua modules
 
 Install additional local/sandboxed *Lua modules* via local/sandboxed [`LuaRocks`](http://luarocks.org):
 

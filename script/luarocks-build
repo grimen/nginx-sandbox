@@ -34,7 +34,7 @@ echo "$LABEL: CONFIGURE"
 ) || echo "$LABEL: CONFIGURE FAIL"
 
 echo "$LABEL: MAKE"
-( make -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
+( make build -j$CORES && echo "$LABEL: BUILD OK" ) || echo "$LABEL: BUILD FAIL"
 
 echo "$LABEL: MAKE INSTALL"
 ( make install && echo "$LABEL: INSTALL OK" ) || echo "$LABEL: INSTALL FAIL"

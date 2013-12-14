@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-# Create new container instance based on Docker image "openresty-nginx" and run bash shell for debugging.
-docker run -i -t -v /vagrant:/app openresty-nginx /bin/bash

@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-# Build Docker image "openresty-nginx-base" based on custom Dockerfile for Nginx/OpenResty.
-docker build -rm -t openresty-nginx-base - < /vagrant/Dockerfile.base
+# Build Docker image "nginx-openresty-base" based on custom Dockerfile for Nginx/OpenResty.
+docker build -rm -t nginx-base - < /vagrant/Dockerfile.base

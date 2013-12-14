@@ -1,6 +1,20 @@
 
+- [BUG]: Make WSS:// work - probably SSL issue.
+
+- [BUG]: Non-OpenResty Nginx build with same features? #geeky
+
 - [WIP]: Proxy cache defaults.
       * http://reviewsignal.com/blog/2013/08/29/reverse-proxy-and-cache-server-with-nginx
+
+- [EXAMPLE]: Custom Debian package
+      * https://github.com/jordansissel/fpm
+      * http://blog.ideabulbs.com/2010/11/how-to-create-your-own-debianubuntu.html
+
+- [REVIEW]: Generate Nginx config for Docker containers.
+      * https://github.com/surma/ngindock
+
+- [REVIEW]: Docker Nginx reload:
+      * https://github.com/jeffutter/dokku-riakcs-plugin/blob/master/nginx-pre-reload
 
 - [EXAMPLE]: Subrequest cache.
       * https://github.com/agentzh/srcache-nginx-module
@@ -26,7 +40,3 @@
       * http://bl.ocks.org/justincormack/948423
 
 - [EXPERIMENT]: Mess around with SPDY - and create some Lua demo.
-
-- [BUG]: Make WSS:// work - probably SSL issue.
-
-- [BUG]: Non-OpenResty Nginx build with same features? #geeky

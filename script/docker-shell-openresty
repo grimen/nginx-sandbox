@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# Stop and remove all existing Docker containers.
+docker stop nginx-shell
+docker rm nginx-shell
+
+# Create new container instance based on Docker image "nginx-openresty" and run bash shell for debugging.
+docker run -i -t -v /vagrant:/app -link redis:redis -entrypoint "/bin/bash" -w "/app" -name nginx-shell nginx-openresty
