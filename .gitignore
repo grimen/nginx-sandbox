@@ -1,7 +1,8 @@
 .DS_Store
 .*~
 *~
-log*
+cache
+logs
 tmp
 vendor
 *_temp
