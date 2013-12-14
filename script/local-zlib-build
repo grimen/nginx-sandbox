@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-source "./script/init"
+source "./script/local-init"
 
 ZLIB_NAME="zlib"
 ZLIB_VERSION="1.2.8"

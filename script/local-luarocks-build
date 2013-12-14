@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-source "./script/init"
+source "./script/local-init"
 
 LUAROCKS_NAME="luarocks"
 LUAROCKS_VERSION="2.1.1"

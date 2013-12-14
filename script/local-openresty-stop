@@ -1,5 +1,5 @@
 #! /usr/bin/env sh
-source "./script/init"
+source "./script/local-init"
 
 OPENRESTY_NAME="ngx_openresty"
 OPENRESTY_PATH="$VENDOR/$OPENRESTY_NAME"

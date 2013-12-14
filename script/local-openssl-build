@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-source "./script/init"
+source "./script/local-init"
 
 OPENSSL_NAME="openssl"
 OPENSSL_VERSION="1.0.1e"

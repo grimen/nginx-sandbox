@@ -1,5 +1,5 @@
 #! /usr/bin/env sh
-source "./script/init"
+source "./script/local-init"
 
 cat "./logo.txt"
 

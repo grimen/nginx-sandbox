@@ -9,7 +9,7 @@ endif
 all: build
 
 start:
-	./script/openresty-nginx-start
+	./script/local-openresty-start
 
 server:
 	make start
@@ -18,7 +18,7 @@ proxy:
 	make start
 
 stop:
-	./script/openresty-nginx-stop
+	./script/local-openresty-stop
 
 open:
 	open http://localhost:8080
@@ -30,33 +30,33 @@ build:
 	make build-pcre \
 	&& make build-zlib \
 	&& make build-openssl \
-	&& make build-openresty-nginx \
+	&& make build-openresty \
 	&& make build-luarocks
 
-build-openresty-nginx:
-	make clean-openresty-nginx \
-	&& ./script/openresty-nginx-build
+build-openresty:
+	make clean-openresty \
+	&& ./script/local-openresty-build
 
 build-pcre:
 	make clean-pcre \
-	&& ./script/pcre-build
+	&& ./script/local-pcre-build
 
 build-zlib:
 	make clean-zlib \
-	&& ./script/zlib-build
+	&& ./script/local-zlib-build
 
 build-openssl:
 	make clean-openssl \
-	&& ./script/openssl-build
+	&& ./script/local-openssl-build
 
 build-luarocks:
 	make clean-luarocks \
-	&& ./script/luarocks-build
+	&& ./script/local-luarocks-build
 
 clean:
 	rm -rf ./vendor
 
-clean-openresty-nginx:
+clean-openresty:
 	rm -rf ./vendor/ngx*
 
 clean-pcre:
@@ -85,6 +85,6 @@ clear:
 	&& rm -f ./cache/*
 
 luarocks:
-	./script/luarocks-local $(RUN_ARGS)
+	./script/local-luarocks $(RUN_ARGS)
 
 .PHONY: start stop open benchmark build clean log clear
